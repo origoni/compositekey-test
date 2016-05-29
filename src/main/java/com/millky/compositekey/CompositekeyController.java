@@ -1,5 +1,7 @@
 package com.millky.compositekey;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +26,8 @@ public class CompositekeyController {
 	@Autowired
 	ParentRepository parentRepository;
 
-	@RequestMapping("/test1")
-	public Child test1(Model model) {
+	@RequestMapping("/test0")
+	public Child test0(Model model) {
 
 		Parent p = new Parent();
 		p.setId("origoni");
@@ -41,6 +43,38 @@ public class CompositekeyController {
 		Child child = childRepository.save(c);
 
 		return child;
+	}
+
+	@RequestMapping("/test1")
+	public List<Parent> test1(Model model) {
+
+		Parent p = new Parent();
+		p.setId("origoni");
+		p.setName("dk");
+
+		Parent parent = parentRepository.save(p);
+
+		Child c1 = new Child();
+		c1.setParent(parent);
+		c1.setName("onbyul");
+		c1.setChildId("olivia");
+
+		childRepository.save(c1);
+
+		Child c2 = new Child();
+		c2.setParent(parent);
+		c2.setName("onsol");
+		c2.setChildId("noah");
+
+		childRepository.save(c2);
+
+		return parentRepository.findAll();
+	}
+
+	@RequestMapping("/test11")
+	public Parent test11(Model model) {
+
+		return parentRepository.findOne("origoni");
 	}
 
 	@RequestMapping("/test2")
@@ -61,12 +95,17 @@ public class CompositekeyController {
 
 		GrandChild g = new GrandChild();
 		g.setChild(child);
-		g.setId("noah");
 		g.setName("onsol");
+		g.setGid("noah");
 
 		GrandChild grandChild = grandChildRepository.save(g);
 
 		return grandChild;
 	}
 
+	@RequestMapping("/test21")
+	public List<Parent> test12(Model model) {
+
+		return parentRepository.findAll();
+	}
 }
